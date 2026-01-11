@@ -1,6 +1,6 @@
 module subman
 
-go 1.25.5
+go 1.24
 
 require (
 	fyne.io/fyne/v2 v2.7.2
