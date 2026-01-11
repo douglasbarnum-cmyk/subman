@@ -245,16 +245,22 @@ docker ps
    fyne-cross windows -arch=amd64,arm64 -app-id=com.subman.app
    ```
 
-3. **Create the release on GitHub:**
+3. **Package macOS .app bundles:**
+   ```bash
+   cd fyne-cross/dist/darwin-amd64 && zip -r ../subman-macos-amd64.zip subman.app && cd ../../..
+   cd fyne-cross/dist/darwin-arm64 && zip -r ../subman-macos-arm64.zip subman.app && cd ../../..
+   ```
+
+4. **Create the release on GitHub:**
    ```bash
    gh release create v1.0.3 --title "v1.0.3" --generate-notes
    ```
 
-4. **Upload all binaries:**
+5. **Upload all binaries:**
    ```bash
    gh release upload v1.0.3 \
-     fyne-cross/dist/darwin-amd64/subman.app.zip \
-     fyne-cross/dist/darwin-arm64/subman.app.zip \
+     fyne-cross/dist/subman-macos-amd64.zip \
+     fyne-cross/dist/subman-macos-arm64.zip \
      fyne-cross/dist/linux-amd64/subman.tar.xz \
      fyne-cross/dist/linux-arm64/subman.tar.xz \
      fyne-cross/dist/windows-amd64/subman.exe.zip \
