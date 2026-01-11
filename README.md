@@ -2,6 +2,24 @@
 
 A privacy-focused desktop application for managing your online subscriptions. Built with Go and the Fyne UI library.
 
+## Screenshots
+
+### Dashboard View
+![Dashboard](docs/screenshots/dashboard.png)
+*Cost summary with monthly, yearly, and year-to-date totals*
+
+### Subscription List
+![Subscription List](docs/screenshots/subscription-list.png)
+*Manage all your subscriptions with custom images and categories*
+
+### Add/Edit Subscription
+![Add Subscription](docs/screenshots/add-subscription.png)
+*Easy form for adding or editing subscriptions*
+
+### Theme Selection
+![Dark Theme](docs/screenshots/dark-theme.png)
+*Choose between light, dark, or system default themes*
+
 ## Features
 
 - **Track Subscriptions**: Manage all your online subscriptions in one place
