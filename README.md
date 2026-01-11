@@ -222,14 +222,19 @@ The project uses GitHub Actions to automatically build cross-platform binaries. 
    ```
 
 2. **GitHub Actions will automatically:**
-   - Build binaries for Windows (amd64), macOS (Intel + Apple Silicon), and Linux (amd64)
+   - Build binaries for Windows (amd64) and Linux (amd64)
    - Create a GitHub release
    - Attach all binaries as downloadable assets
 
 3. **Download binaries from:**
    `https://github.com/douglasbarnum-cmyk/subman/releases`
 
-**Note:** This works with free GitHub accounts and runs on GitHub's infrastructure (no local Docker needed).
+**Note about macOS builds:** GitHub Actions cannot build macOS binaries due to SDK requirements. To build for macOS locally:
+```bash
+fyne-cross darwin -arch=amd64,arm64 -app-id=com.subman.app
+```
+
+**Note:** GitHub Actions works with free GitHub accounts and runs on their infrastructure (no local Docker needed).
 
 ## Future Enhancements
 

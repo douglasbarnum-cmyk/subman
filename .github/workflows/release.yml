@@ -29,13 +29,15 @@ jobs:
         run: |
           fyne-cross windows -arch=amd64 -app-id=com.subman.app
 
-      - name: Build for macOS (Intel)
-        run: |
-          fyne-cross darwin -arch=amd64 -app-id=com.subman.app
-
-      - name: Build for macOS (Apple Silicon)
-        run: |
-          fyne-cross darwin -arch=arm64 -app-id=com.subman.app
+      # Note: macOS builds require the macOS SDK which isn't available in GitHub Actions
+      # Build macOS binaries locally with: fyne-cross darwin -arch=amd64,arm64
+      # - name: Build for macOS (Intel)
+      #   run: |
+      #     fyne-cross darwin -arch=amd64 -app-id=com.subman.app
+      #
+      # - name: Build for macOS (Apple Silicon)
+      #   run: |
+      #     fyne-cross darwin -arch=arm64 -app-id=com.subman.app
 
       - name: Build for Linux
         run: |
@@ -47,18 +49,6 @@ jobs:
           # Windows
           if [ -f fyne-cross/dist/windows-amd64/subman.exe ]; then
             zip -j release/subman-windows-amd64.zip fyne-cross/dist/windows-amd64/subman.exe
-          fi
-          # macOS Intel
-          if [ -d fyne-cross/dist/darwin-amd64/subman.app ]; then
-            cd fyne-cross/dist/darwin-amd64
-            zip -r ../../../release/subman-macos-amd64.zip subman.app
-            cd ../../..
-          fi
-          # macOS Apple Silicon
-          if [ -d fyne-cross/dist/darwin-arm64/subman.app ]; then
-            cd fyne-cross/dist/darwin-arm64
-            zip -r ../../../release/subman-macos-arm64.zip subman.app
-            cd ../../..
           fi
           # Linux
           if [ -f fyne-cross/dist/linux-amd64/subman ]; then
