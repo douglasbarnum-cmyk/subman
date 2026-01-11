@@ -5,10 +5,14 @@ A privacy-focused desktop application for managing your online subscriptions. Bu
 ## Features
 
 - **Track Subscriptions**: Manage all your online subscriptions in one place
-- **Cost Analysis**: View monthly and yearly cost summaries at a glance
+- **Payment History**: Automatic payment tracking with Year-to-Date spending calculations
+- **Pause Subscriptions**: Temporarily pause subscriptions without losing data
+- **Custom Images**: Add logos/images to subscriptions with category-based defaults
+- **Cost Analysis**: View monthly, yearly, and YTD cost summaries at a glance
 - **Search & Filter**: Find subscriptions by name, category, or billing cycle
 - **Sort Options**: Sort by name, cost, or next payment date
 - **Export Data**: Export your subscription data to CSV or JSON
+- **Theme Selection**: Choose between light, dark, or system default themes
 - **Privacy First**: All data stored locally on your machine - no cloud, no third parties
 - **Cross-Platform**: Works on macOS, Linux, and Windows
 
@@ -21,7 +25,10 @@ For each subscription, you can track:
 - Next payment date
 - Start date
 - Category (Streaming, Software, Utilities, Gaming, News, Education, Creator, Other)
+- Custom image/logo
+- Pause status
 - Notes
+- Payment history (automatically tracked)
 
 ## Installation
 
@@ -140,6 +147,7 @@ Use the filter panel at the top to:
 The dashboard at the top displays:
 - **Monthly Total**: Total monthly cost (yearly subscriptions converted to monthly equivalent)
 - **Yearly Total**: Total yearly cost
+- **Year to Date**: Actual amount spent from January 1st to today (based on payment history)
 - **Active Subscriptions**: Number of subscriptions being tracked
 
 ## Architecture
@@ -188,6 +196,41 @@ go build -o subman
 go build -o subman.exe
 ```
 
+### Cross-Platform Builds with fyne-cross
+
+For building cross-platform binaries locally, install fyne-cross:
+
+```bash
+go install github.com/fyne-io/fyne-cross@latest
+
+# Build for all platforms
+fyne-cross windows -arch=amd64
+fyne-cross darwin -arch=amd64,arm64
+fyne-cross linux -arch=amd64
+```
+
+Binaries will be in `fyne-cross/dist/`.
+
+### Creating a Release
+
+The project uses GitHub Actions to automatically build cross-platform binaries. To create a new release:
+
+1. **Tag the release:**
+   ```bash
+   git tag v1.0.0
+   git push origin v1.0.0
+   ```
+
+2. **GitHub Actions will automatically:**
+   - Build binaries for Windows (amd64), macOS (Intel + Apple Silicon), and Linux (amd64)
+   - Create a GitHub release
+   - Attach all binaries as downloadable assets
+
+3. **Download binaries from:**
+   `https://github.com/douglasbarnum-cmyk/subman/releases`
+
+**Note:** This works with free GitHub accounts and runs on GitHub's infrastructure (no local Docker needed).
+
 ## Future Enhancements
 
 Potential features for future versions:
@@ -195,7 +238,6 @@ Potential features for future versions:
 - Charts and visualizations for spending trends
 - Multi-currency support
 - Cloud sync (optional)
-- Payment history tracking
 - Free trial expiration tracking
 - Recurring payment calendar view
 
