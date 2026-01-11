@@ -37,7 +37,8 @@ For each subscription, you can track:
 
 ```bash
 # Clone the repository
-cd /Users/dougb/go-projects/subman
+git clone https://github.com/douglasbarnum-cmyk/subman.git
+cd subman
 
 # Download dependencies
 go mod tidy
