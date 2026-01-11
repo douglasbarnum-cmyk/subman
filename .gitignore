@@ -8,6 +8,7 @@ subman
 
 # fyne-cross build artifacts
 fyne-cross/
+Icon.png
 
 # Test binary
 *.test
