@@ -198,43 +198,71 @@ go build -o subman.exe
 
 ### Cross-Platform Builds with fyne-cross
 
-For building cross-platform binaries locally, install fyne-cross:
+Build binaries for multiple platforms and architectures:
 
 ```bash
+# Install fyne-cross
 go install github.com/fyne-io/fyne-cross@latest
 
-# Build for all platforms
-fyne-cross windows -arch=amd64
-fyne-cross darwin -arch=amd64,arm64
-fyne-cross linux -arch=amd64
+# Build for specific platforms
+fyne-cross darwin -arch=amd64,arm64 -app-id=com.subman.app  # macOS Intel + Apple Silicon
+fyne-cross linux -arch=amd64,arm64 -app-id=com.subman.app   # Linux x86-64 + ARM64
+fyne-cross windows -arch=amd64,arm64 -app-id=com.subman.app # Windows x86-64 + ARM64
 ```
 
-Binaries will be in `fyne-cross/dist/`.
+Packaged binaries will be in `fyne-cross/dist/[platform]-[arch]/`
 
 ### Creating a Release
 
-The project uses GitHub Actions to automatically build cross-platform binaries. To create a new release:
+Releases are built and published manually. Docker must be running for fyne-cross.
 
-1. **Tag the release:**
-   ```bash
-   git tag v1.0.0
-   git push origin v1.0.0
-   ```
-
-2. **GitHub Actions will automatically:**
-   - Build binaries for Windows (amd64) and Linux (amd64)
-   - Create a GitHub release
-   - Attach all binaries as downloadable assets
-
-3. **Download binaries from:**
-   `https://github.com/douglasbarnum-cmyk/subman/releases`
-
-**Note about macOS builds:** GitHub Actions cannot build macOS binaries due to SDK requirements. To build for macOS locally:
+**Prerequisites:**
 ```bash
-fyne-cross darwin -arch=amd64,arm64 -app-id=com.subman.app
+# Install fyne-cross
+go install github.com/fyne-io/fyne-cross@latest
+
+# Ensure Docker is running
+docker ps
 ```
 
-**Note:** GitHub Actions works with free GitHub accounts and runs on their infrastructure (no local Docker needed).
+**Release Process:**
+
+1. **Tag and push the release:**
+   ```bash
+   git tag v1.0.3
+   git push origin v1.0.3
+   ```
+
+2. **Build binaries for all platforms:**
+   ```bash
+   # macOS (Intel + Apple Silicon)
+   fyne-cross darwin -arch=amd64,arm64 -app-id=com.subman.app
+
+   # Linux (amd64 + arm64)
+   fyne-cross linux -arch=amd64,arm64 -app-id=com.subman.app
+
+   # Windows (amd64 + arm64)
+   fyne-cross windows -arch=amd64,arm64 -app-id=com.subman.app
+   ```
+
+3. **Create the release on GitHub:**
+   ```bash
+   gh release create v1.0.3 --title "v1.0.3" --generate-notes
+   ```
+
+4. **Upload all binaries:**
+   ```bash
+   gh release upload v1.0.3 \
+     fyne-cross/dist/darwin-amd64/subman.app.zip \
+     fyne-cross/dist/darwin-arm64/subman.app.zip \
+     fyne-cross/dist/linux-amd64/subman.tar.xz \
+     fyne-cross/dist/linux-arm64/subman.tar.xz \
+     fyne-cross/dist/windows-amd64/subman.exe.zip \
+     fyne-cross/dist/windows-arm64/subman.exe.zip
+   ```
+
+**Download releases from:**
+`https://github.com/douglasbarnum-cmyk/subman/releases`
 
 ## Future Enhancements
 
