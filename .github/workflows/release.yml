@@ -46,26 +46,17 @@ jobs:
       - name: Prepare release assets
         run: |
           mkdir -p release
-          echo "Checking for built binaries..."
-          ls -la fyne-cross/dist/ || echo "fyne-cross/dist not found"
-          ls -la fyne-cross/dist/windows-amd64/ || echo "windows dir not found"
-          ls -la fyne-cross/dist/linux-amd64/ || echo "linux dir not found"
-          # Windows
-          if [ -f fyne-cross/dist/windows-amd64/subman.exe ]; then
-            echo "Creating Windows zip..."
-            zip -j release/subman-windows-amd64.zip fyne-cross/dist/windows-amd64/subman.exe
-          else
-            echo "Windows binary not found"
+          # fyne-cross automatically packages binaries
+          # Windows (comes as subman.exe.zip)
+          if [ -f fyne-cross/dist/windows-amd64/subman.exe.zip ]; then
+            cp fyne-cross/dist/windows-amd64/subman.exe.zip release/subman-windows-amd64.zip
           fi
-          # Linux
-          if [ -f fyne-cross/dist/linux-amd64/subman ]; then
-            echo "Creating Linux tarball..."
-            tar -czf release/subman-linux-amd64.tar.gz -C fyne-cross/dist/linux-amd64 subman
-          else
-            echo "Linux binary not found"
+          # Linux (comes as subman.tar.xz)
+          if [ -f fyne-cross/dist/linux-amd64/subman.tar.xz ]; then
+            cp fyne-cross/dist/linux-amd64/subman.tar.xz release/subman-linux-amd64.tar.xz
           fi
-          echo "Release directory contents:"
-          ls -la release/
+          echo "Release assets:"
+          ls -lh release/
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
