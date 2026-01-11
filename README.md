@@ -216,6 +216,20 @@ Packaged binaries will be in `fyne-cross/dist/[platform]-[arch]/`
 
 Releases are built and published manually. Docker must be running for fyne-cross.
 
+**Quick Release (Automated):**
+```bash
+# Ensure Docker is running, then:
+./release.sh v1.0.3
+```
+
+This script will:
+- Build binaries for all platforms (macOS, Linux, Windows) and architectures (amd64, arm64)
+- Package macOS .app bundles
+- Create the GitHub release
+- Upload all binaries
+
+**Manual Release Process:**
+
 **Prerequisites:**
 ```bash
 # Install fyne-cross
@@ -224,8 +238,6 @@ go install github.com/fyne-io/fyne-cross@latest
 # Ensure Docker is running
 docker ps
 ```
-
-**Release Process:**
 
 1. **Tag and push the release:**
    ```bash

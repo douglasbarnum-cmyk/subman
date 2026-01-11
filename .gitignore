@@ -6,6 +6,9 @@
 *.dylib
 subman
 
+# fyne-cross build artifacts
+fyne-cross/
+
 # Test binary
 *.test
 
