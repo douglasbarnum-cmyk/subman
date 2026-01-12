@@ -139,6 +139,11 @@ func (s *SubscriptionService) GetSummary() (*models.CostSummary, error) {
 	return calculator.CalculateSummary(list.Subscriptions, list.Payments), nil
 }
 
+// GetStorage returns the underlying storage for direct access
+func (s *SubscriptionService) GetStorage() storage.Storage {
+	return s.storage
+}
+
 // filterSubscriptions applies filter criteria
 func (s *SubscriptionService) filterSubscriptions(subs []models.Subscription, filter *models.FilterCriteria) []models.Subscription {
 	if filter == nil {

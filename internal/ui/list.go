@@ -32,14 +32,16 @@ func NewListView(app *App) *ListView {
 }
 
 func (l *ListView) Render() fyne.CanvasObject {
-	// Toolbar with Add, Sort, Export buttons
+	// Toolbar with Add, Sort, Import, Export buttons
 	addBtn := widget.NewButton("Add Subscription", l.showAddDialog)
 	sortBtn := widget.NewButton("Sort", l.showSortMenu)
+	importBtn := widget.NewButton("Import", l.showImportDialog)
 	exportBtn := widget.NewButton("Export", l.showExportDialog)
 
 	toolbar := container.NewHBox(
 		addBtn,
 		sortBtn,
+		importBtn,
 		exportBtn,
 	)
 
@@ -154,6 +156,11 @@ func (l *ListView) showSortMenu() {
 func (l *ListView) showExportDialog() {
 	exportView := NewExportView(l.app, l.subscriptions)
 	exportView.Show()
+}
+
+func (l *ListView) showImportDialog() {
+	importView := NewImportView(l.app)
+	importView.Show()
 }
 
 func (l *ListView) SetFilter(filter *models.FilterCriteria) {

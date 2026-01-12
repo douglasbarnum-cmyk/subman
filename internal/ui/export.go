@@ -5,6 +5,7 @@ import (
 	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/widget"
 
+	"subman/internal/images"
 	"subman/internal/models"
 	"subman/pkg/export"
 )
@@ -22,7 +23,7 @@ func NewExportView(app *App, subs []models.Subscription) *ExportView {
 }
 
 func (e *ExportView) Show() {
-	formatSelect := widget.NewRadioGroup([]string{"CSV", "JSON"}, nil)
+	formatSelect := widget.NewRadioGroup([]string{"CSV", "JSON", "Bundle (with images)"}, nil)
 	formatSelect.Selected = "CSV"
 
 	content := widget.NewForm(
@@ -45,22 +46,44 @@ func (e *ExportView) doExport(format string) {
 		}
 		defer writer.Close()
 
-		var exporter export.Exporter
-		if format == "CSV" {
-			exporter = export.NewCSVExporter()
-		} else {
-			exporter = export.NewJSONExporter()
-		}
+		if format == "Bundle (with images)" {
+			// For bundle export, we need the full SubscriptionList with payments
+			list, err := e.app.service.GetStorage().Load()
+			if err != nil {
+				dialog.ShowError(err, e.app.window)
+				return
+			}
 
-		if err := exporter.Export(e.subscriptions, writer); err != nil {
-			dialog.ShowError(err, e.app.window)
+			imagesDir, err := images.GetImagesDir()
+			if err != nil {
+				dialog.ShowError(err, e.app.window)
+				return
+			}
+
+			bundleExporter := export.NewBundleExporter(imagesDir)
+			if err := bundleExporter.ExportBundle(list, writer); err != nil {
+				dialog.ShowError(err, e.app.window)
+			}
+		} else {
+			var exporter export.Exporter
+			if format == "CSV" {
+				exporter = export.NewCSVExporter()
+			} else {
+				exporter = export.NewJSONExporter()
+			}
+
+			if err := exporter.Export(e.subscriptions, writer); err != nil {
+				dialog.ShowError(err, e.app.window)
+			}
 		}
 	}, e.app.window)
 
 	if format == "CSV" {
 		saveDialog.SetFileName("subscriptions.csv")
-	} else {
+	} else if format == "JSON" {
 		saveDialog.SetFileName("subscriptions.json")
+	} else {
+		saveDialog.SetFileName("subscriptions.zip")
 	}
 
 	saveDialog.Show()
