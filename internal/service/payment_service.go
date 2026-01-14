@@ -74,6 +74,26 @@ func (p *PaymentService) GeneratePaymentsForSubscription(sub *models.Subscriptio
 		}
 	}
 
+	// Calculate and update the next payment date
+	nextPaymentDate := currentDate
+	if !nextPaymentDate.After(now) {
+		// If currentDate is not after now, calculate the next billing cycle
+		if sub.BillingCycle == models.Monthly {
+			nextPaymentDate = currentDate.AddDate(0, 1, 0)
+		} else {
+			nextPaymentDate = currentDate.AddDate(1, 0, 0)
+		}
+	}
+
+	// Update the subscription's NextPayment field
+	for i := range list.Subscriptions {
+		if list.Subscriptions[i].ID == sub.ID {
+			list.Subscriptions[i].NextPayment = nextPaymentDate
+			list.Subscriptions[i].UpdatedAt = time.Now()
+			break
+		}
+	}
+
 	return p.storage.Save(list)
 }
 
